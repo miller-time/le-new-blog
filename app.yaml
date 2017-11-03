@@ -4,8 +4,10 @@ runtime: python27
 api_version: 1
 threadsafe: yes
 
-handlers:
+skip_files:
+- ^le_new_blog/client/node_modules$
 
+handlers:
 - url: .*
   script: le_new_blog.app
 

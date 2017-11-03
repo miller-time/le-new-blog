@@ -1,7 +1,7 @@
 import os
 from flask import Flask, send_from_directory
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='client/build', static_url_path='')
 
 @app.route('/favicon.ico')
 def favicon():
@@ -12,4 +12,7 @@ def favicon():
 
 @app.route('/')
 def index():
-    return 'Le New Blog :)'
+    return send_from_directory(
+        os.path.join(app.root_path, 'client', 'build'),
+        'index.html'
+    )
