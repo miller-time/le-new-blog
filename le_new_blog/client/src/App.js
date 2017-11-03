@@ -1,13 +1,14 @@
 import React from 'react';
 
 import SiteNav from './components/SiteNav';
+import Posts from './containers/Posts';
 
 function App() {
   return (
     <div>
       <SiteNav />
       <div className="container">
-        <i>posts coming soon...</i>
+        <Posts />
       </div>
     </div>
   );
