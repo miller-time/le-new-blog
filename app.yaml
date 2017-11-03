@@ -1,0 +1,14 @@
+application: le-new-blog
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+
+- url: .*
+  script: le_new_blog.app
+
+libraries:
+- name: jinja2
+  version: 2.6
