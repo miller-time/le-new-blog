@@ -92,3 +92,50 @@ export function getUserInfo() {
     dispatch(makeRequestForUserInfo());
   };
 }
+
+export const CREATE_POST_LOADING = 'CREATE_POST_LOADING';
+export const CREATE_POST_RECEIVED = 'CREATE_POST_RECEIVED';
+
+function createPostLoading(loading) {
+  return {
+    type: CREATE_POST_LOADING,
+    loading
+  };
+}
+
+function createPostReceived(post) {
+  return {
+    type: CREATE_POST_RECEIVED,
+    post
+  };
+}
+
+function makeCreatePostRequest(title, body) {
+  return (dispatch) => {
+    dispatch(createPostLoading(true));
+
+    fetch('/api/posts', {
+      method: 'post',
+      credentials: 'include',
+      body: JSON.stringify({ title, body })
+    }).then((response) => {
+      if (response.ok) {
+        response.json().then((jsonResponse) => {
+          dispatch(createPostLoading(false));
+          dispatch(createPostReceived(jsonResponse.post));
+        });
+      } else {
+        response.text().then((error) => {
+          dispatch(createPostLoading(false));
+          dispatch(errorReceived(error));
+        });
+      }
+    });
+  };
+}
+
+export function createPost(title, body) {
+  return (dispatch) => {
+    dispatch(makeCreatePostRequest(title, body));
+  };
+}

@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import abort, jsonify, request
 from flask.views import MethodView
 from google.appengine.api import users
 
@@ -35,9 +35,25 @@ class Posts(MethodView):
 
     return jsonify(posts=[p.to_dict() for p in posts])
 
+  def post(self):
+    admin = users.is_current_user_admin()
+    if not admin:
+      return abort(401)
+
+    payload = request.get_json(force=True, silent=True)
+    if not payload:
+      return abort(400)
+
+    title = payload.get('title')
+    body = payload.get('body')
+    post = Post(title=title, body=body)
+    post.put()
+
+    return jsonify(post=post.to_dict())
+
 posts_view = Posts.as_view('posts')
 app.add_url_rule(
   '/api/posts',
   view_func=posts_view,
-  methods=['GET']
+  methods=['GET', 'POST']
 )
