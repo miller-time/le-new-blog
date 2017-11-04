@@ -49,3 +49,46 @@ export function getPosts() {
     dispatch(makeRequestForPosts());
   };
 }
+
+export const USER_INFO_LOADING = 'USER_INFO_LOADING';
+export const USER_INFO_RECEIVED = 'USER_INFO_RECEIVED';
+
+function userInfoLoading(loading) {
+  return {
+    type: USER_INFO_LOADING,
+    loading
+  };
+}
+
+function userInfoReceived(userInfo) {
+  return {
+    type: USER_INFO_RECEIVED,
+    userInfo
+  };
+}
+
+function makeRequestForUserInfo() {
+  return (dispatch) => {
+    dispatch(userInfoLoading(true));
+
+    fetch('/api/user_info', { credentials: 'include' }).then((response) => {
+      if (response.ok) {
+        response.json().then((userInfo) => {
+          dispatch(userInfoLoading(false));
+          dispatch(userInfoReceived(userInfo));
+        });
+      } else {
+        response.text().then((error) => {
+          dispatch(userInfoLoading(false));
+          dispatch(errorReceived(error));
+        });
+      }
+    });
+  };
+}
+
+export function getUserInfo() {
+  return (dispatch) => {
+    dispatch(makeRequestForUserInfo());
+  };
+}

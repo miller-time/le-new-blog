@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SiteNav from './components/SiteNav';
+import SiteNav from './containers/SiteNav';
 import Posts from './containers/Posts';
 
 function App() {
