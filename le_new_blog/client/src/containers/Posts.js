@@ -10,6 +10,7 @@ class PostsComponent extends Component {
   }
 
   render() {
+    const admin = this.props.admin;
     const posts = this.props.posts || [];
 
     return (
@@ -17,6 +18,7 @@ class PostsComponent extends Component {
         {posts.map((post, index) => (
           <Post
             key={index}
+            admin={admin}
             post={post}
           />
         ))}
@@ -27,6 +29,7 @@ class PostsComponent extends Component {
 
 function mapStateToProps(state) {
   return {
+    admin: state.userInfo ? state.userInfo.admin : false,
     posts: state.posts,
     error: state.error
   };

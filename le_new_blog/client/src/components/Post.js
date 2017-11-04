@@ -1,11 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import * as moment from 'moment';
 
 import './Post.css';
 
 function Post(props) {
-  const { title, body, created } = props.post;
+  const admin = props.admin;
+  const { id, title, body, created } = props.post;
+
+  const editUrl = `/edit/${id}`;
 
   const dateCreated = moment(created);
 
@@ -16,7 +20,14 @@ function Post(props) {
 
   return (
     <div>
-      <h3>{title}</h3>
+      <div className="post-heading">
+        <h3>{title}</h3>
+        {admin ?
+          <Link to={editUrl}>
+            <span className="glyphicon glyphicon-pencil"></span>
+          </Link>
+        : null}
+      </div>
       <div className="timestamp" title={timestamp}>{display}</div>
       <div className="post-body">
         <ReactMarkdown source={body} />

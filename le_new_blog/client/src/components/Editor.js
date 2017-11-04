@@ -6,7 +6,20 @@ class Editor extends Component {
     this.titleInput.focus();
   }
 
+  componentDidUpdate() {
+    // in case `post` is set after the initial load (and `defaultValue` missed it)
+    const post = this.props.post || {};
+    if (this.titleInput) {
+      this.titleInput.value = post.title || '';
+    }
+    if (this.bodyInput) {
+      this.bodyInput.value = post.body || '';
+    }
+  }
+
   render() {
+    const post = this.props.post || {};
+
     return (
       <div>
         <FormGroup controlId="new-post-title">
@@ -14,6 +27,7 @@ class Editor extends Component {
           <FormControl
             placeholder="Post Title"
             inputRef={(el) => this.titleInput = el}
+            defaultValue={post.title}
           />
         </FormGroup>
 
@@ -23,6 +37,7 @@ class Editor extends Component {
             componentClass="textarea"
             rows="10"
             inputRef={(el) => this.bodyInput = el}
+            defaultValue={post.body}
           />
         </FormGroup>
 

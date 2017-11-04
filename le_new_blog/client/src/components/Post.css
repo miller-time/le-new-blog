@@ -1,3 +1,9 @@
+.post-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
 .timestamp {
   color: #bbb;
   font-size: 12px;
