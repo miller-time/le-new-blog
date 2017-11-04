@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 import { getUserInfo } from '../store/actions';
 
@@ -10,6 +11,7 @@ class SiteNavComponent extends Component {
   }
 
   render() {
+    const admin = this.admin();
     const user = this.user();
     const userIcon = this.userIcon();
     const authUrl = this.authUrl();
@@ -22,6 +24,13 @@ class SiteNavComponent extends Component {
           </Navbar.Brand>
         </Navbar.Header>
         <Navbar.Collapse>
+          {admin ?
+            <Nav>
+              <LinkContainer to="/new">
+                <NavItem>New</NavItem>
+              </LinkContainer>
+            </Nav>
+          : null}
           <Nav pullRight>
             {user ?
               <NavItem>{user}</NavItem>
@@ -31,6 +40,10 @@ class SiteNavComponent extends Component {
         </Navbar.Collapse>
       </Navbar>
     )
+  }
+
+  admin() {
+    return this.props.userInfo && this.props.userInfo.admin;
   }
 
   user() {
