@@ -8,7 +8,7 @@ import le_new_blog.api
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(
-        os.path.join(app.root_path, 'static'),
+        os.path.join(app.root_path, 'client', 'build'),
         'favicon.ico', mimetype='image/vnd.microsoft.icon'
     )
 
