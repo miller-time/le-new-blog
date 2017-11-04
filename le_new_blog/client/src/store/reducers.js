@@ -4,7 +4,9 @@ import {
   POSTS_LOADING,
   POSTS_RECEIVED,
   USER_INFO_LOADING,
-  USER_INFO_RECEIVED
+  USER_INFO_RECEIVED,
+  CREATE_POST_LOADING,
+  CREATE_POST_RECEIVED
 } from './actions';
 
 function loading(state = {}, action) {
@@ -19,6 +21,11 @@ function loading(state = {}, action) {
         ...state,
         userInfo: action.loading
       };
+    case CREATE_POST_LOADING:
+      return {
+        ...state,
+        create: action.loading
+      };
     default:
       return state;
   }
@@ -28,6 +35,11 @@ function posts(state = [], action) {
   switch (action.type) {
     case POSTS_RECEIVED:
       return action.posts;
+    case CREATE_POST_RECEIVED:
+      return [
+        action.post,
+        ...state
+      ];
     default:
       return state;
   }
