@@ -12,8 +12,10 @@ def favicon():
         'favicon.ico', mimetype='image/vnd.microsoft.icon'
     )
 
+@app.route('/edit/<id>')
+@app.route('/new')
 @app.route('/')
-def index():
+def index(id=None):
     return send_from_directory(
         os.path.join(app.root_path, 'client', 'build'),
         'index.html'
