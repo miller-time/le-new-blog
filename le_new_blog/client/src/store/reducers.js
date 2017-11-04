@@ -6,7 +6,9 @@ import {
   USER_INFO_LOADING,
   USER_INFO_RECEIVED,
   CREATE_POST_LOADING,
-  CREATE_POST_RECEIVED
+  CREATE_POST_RECEIVED,
+  EDIT_POST_LOADING,
+  EDIT_POST_RECEIVED
 } from './actions';
 
 function loading(state = {}, action) {
@@ -26,6 +28,11 @@ function loading(state = {}, action) {
         ...state,
         create: action.loading
       };
+    case EDIT_POST_LOADING:
+      return {
+        ...state,
+        edit: action.loading
+      };
     default:
       return state;
   }
@@ -40,6 +47,13 @@ function posts(state = [], action) {
         action.post,
         ...state
       ];
+    case EDIT_POST_RECEIVED:
+      return state.map((post) => {
+        if (post.id === action.post.id) {
+          return action.post;
+        }
+        return post;
+      });
     default:
       return state;
   }

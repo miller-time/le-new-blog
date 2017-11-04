@@ -31,3 +31,7 @@ class Post(ndb.Model):
   @classmethod
   def get(cls):
     return cls.query(ancestor=post_key).order(-cls.created).fetch()
+
+  @classmethod
+  def find(cls, id):
+    return cls.get_by_id(int(id), parent=post_key)

@@ -139,3 +139,50 @@ export function createPost(title, body) {
     dispatch(makeCreatePostRequest(title, body));
   };
 }
+
+export const EDIT_POST_LOADING = 'EDIT_POST_LOADING';
+export const EDIT_POST_RECEIVED = 'EDIT_POST_RECEIVED';
+
+function editPostLoading(loading) {
+  return {
+    type: EDIT_POST_LOADING,
+    loading
+  };
+}
+
+function editPostReceived(post) {
+  return {
+    type: EDIT_POST_RECEIVED,
+    post
+  };
+}
+
+function makeEditPostRequest(id, title, body) {
+  return (dispatch) => {
+    dispatch(editPostLoading(true));
+
+    fetch(`/api/posts/${id}`, {
+      method: 'put',
+      credentials: 'include',
+      body: JSON.stringify({ title, body })
+    }).then((response) => {
+      if (response.ok) {
+        response.json().then((jsonResponse) => {
+          dispatch(editPostLoading(false));
+          dispatch(editPostReceived(jsonResponse.post));
+        });
+      } else {
+        response.text().then((error) => {
+          dispatch(editPostLoading(false));
+          dispatch(errorReceived(error));
+        });
+      }
+    });
+  };
+}
+
+export function editPost(id, title, body) {
+  return (dispatch) => {
+    dispatch(makeEditPostRequest(id, title, body));
+  };
+}

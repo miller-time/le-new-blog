@@ -36,8 +36,7 @@ class Posts(MethodView):
     return jsonify(posts=[p.to_dict() for p in posts])
 
   def post(self):
-    admin = users.is_current_user_admin()
-    if not admin:
+    if not users.is_current_user_admin():
       return abort(401)
 
     payload = request.get_json(force=True, silent=True)
@@ -56,4 +55,33 @@ app.add_url_rule(
   '/api/posts',
   view_func=posts_view,
   methods=['GET', 'POST']
+)
+
+class PostDetail(MethodView):
+  def put(self, id):
+    if not users.is_current_user_admin():
+      return abort(401)
+
+    post = Post.find(id)
+    if not post:
+      return abort(404)
+
+    payload = request.get_json(force=True, silent=True)
+    if not payload:
+      return abort(400)
+
+    title = payload.get('title')
+    body = payload.get('body')
+
+    post.title = title
+    post.body = body
+    post.put()
+
+    return jsonify(post=post.to_dict())
+
+post_detail_view = PostDetail.as_view('post_detail')
+app.add_url_rule(
+  '/api/posts/<id>',
+  view_func=post_detail_view,
+  methods=['PUT']
 )
