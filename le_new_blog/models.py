@@ -1,6 +1,14 @@
 from google.appengine.ext import ndb
+from pytz import timezone, utc
 
 post_key = ndb.Key('Post', 'post_key')
+
+def local_timestamp(dt):
+  if not dt:
+    return ''
+  if not dt.tzinfo:
+    dt = dt.replace(tzinfo=utc)
+  return dt.astimezone(timezone('PST8PDT')).isoformat()
 
 class Post(ndb.Model):
   title = ndb.StringProperty()
@@ -16,8 +24,8 @@ class Post(ndb.Model):
       'id': self.key.id(),
       'title': self.title,
       'body': self.body,
-      'created': self.created.isoformat(),
-      'updated': self.updated.isoformat()
+      'created': local_timestamp(self.created),
+      'updated': local_timestamp(self.updated)
     }
 
   @classmethod

@@ -15,7 +15,10 @@ class PostsComponent extends Component {
     return (
       <div>
         {posts.map((post, index) => (
-          <Post key={index} />
+          <Post
+            key={index}
+            post={post}
+          />
         ))}
       </div>
     );
